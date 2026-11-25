@@ -5,6 +5,9 @@ second spent in a focus session earns in-game points, which can be spent on
 crates to unlock a study companion character and a background scene, both
 shown next to the timer while you study.
 
+**Stack:** Node.js (ESM), Express, libSQL/SQLite, Drizzle ORM, JWT +
+refresh-token auth, vanilla HTML/CSS/JS frontend, Vitest + Supertest.
+
 ## Core Mechanics
 
 **Mechanic 1 — Timer & Points**
@@ -35,11 +38,15 @@ things doesn't hurt your rank.
 
 ## Quick Start
 
-\`\`\`bash
+```bash
 npm install
+cp .env.example .env    # Windows PowerShell: Copy-Item .env.example .env
 npm run db
 npm run dev
-\`\`\`
+```
+
+Set a real `JWT_SECRET` in `.env` before running anywhere other than your own
+machine.
 
 Open:
 - `http://localhost:3000/index.html` — the study timer (main page)
@@ -63,27 +70,30 @@ out and back in (or clear `localStorage`/cookies) to fix
 | `profile.html` | Avatar (editable via preset eyes/mouth pickers), current/lifetime points, total time studied, session history |
 | `leaderboard.html` | Top users by lifetime accumulated points |
 
-## Test Accounts
+## Demo Accounts
 
-Seeded by `npm run db`:
+Seeded by `npm run db` (local development only):
 
 | Username | Password | Points | Notes |
 |---|---|---|---|
 | `violet` | `password123` | 3200 | Sample session history + a couple owned items |
 | `demo` | `demo1234` | 500 | Fresh account, no history |
-| `showcase` | `showcase123` | 5000 | Owns the full 10-character + 10-background catalog, for demoing once real media is uploaded |
+| `showcase` | `showcase123` | 5000 | Owns the full 10-character + 10-background catalog |
 
 ## Database Schema
 
 Six tables: `users`, `sessions`, `crates`, `items`, `user_items`,
-`refresh_tokens`. See `ERD.dbml` (or the diagram in the CA2 report) for the
-full entity relationship diagram.
+`refresh_tokens`. The schema lives in `src/db/schema.js`.
 
 ## API Endpoints
 
 ### Auth (`/api/auth`) — public, rate-limited
-Register and login are both rate-limited to 10 requests per 15 minutes per
-IP (shared across both endpoints) against brute-force attempts.
+`/register` and `/login` are rate-limited to 10 requests per 15 minutes per
+IP (shared across both) against brute-force attempts. `/refresh` has its own
+looser limit of 30 requests per 15 minutes per IP.
+
+Registration rules: username 3–20 characters (letters, numbers, underscores
+only); password 8–72 characters.
 
 | Method | Route | Description |
 |---|---|---|
@@ -124,37 +134,20 @@ IP (shared across both endpoints) against brute-force attempts.
 | PATCH | `/:instanceId` | Equip/unequip one item (`{ "equipped": true/false }`) |
 | DELETE | `/:instanceId` | Permanently remove an owned item |
 
-## Design Decisions & Assumptions
-
-These deviate from or extend the provided scaffold and are documented here
-for transparency:
-
-- **`src/utils/_errors.js`** is marked "DO NOT MODIFY" in the scaffold, but
-  only shipped with 4 generic error codes. Three were added —
-  `UNAUTHORIZED` (401), `CONFLICT` (409), `FORBIDDEN` (403) — since the app
-  needs proper status codes for failed auth, duplicate usernames, and
-  owner-only resource access. Only the `ERROR_CODES` map was extended; the
-  `AppError` class and `errorHandler` function were left untouched.
-
-- **`index.js`** originally had a comment saying it would "only listen when
-  run directly (not imported for testing)" but was missing the actual guard,
-  meaning every `npm test` run silently started a real server on port 3000.
-  Added the missing check (`process.argv[1] === fileURLToPath(import.meta.url)`).
+## Design Decisions
 
 - **`user_id` is a UUID (text), not an auto-incrementing integer.** This
   avoids exposing a guessable, enumerable user count via the API/JWT.
 
-- **The original room/wall-decoration mechanic was replaced with a character +
-  background equip system.** Rather than placing items at `(x, y)`
-  coordinates in a room, users equip exactly one character and one
-  background at a time — two independent slots on the same `user_items`
-  table (`equipped` boolean), rather than two separate concepts.
+- **Characters and backgrounds share one equip system.** Users equip exactly
+  one character and one background at a time — two independent slots on the
+  same `user_items` table (`equipped` boolean), rather than two separate
+  concepts.
 
 - **Two crates only, not one per theme.** `crates.type` is `'character'` or
   `'background'`; the character crate's pool spans all three character
-  themes (human/animal/creature) rather than needing a separate crate per
-  theme. `items.theme` is only meaningful for character items and is `null`
-  for backgrounds.
+  themes (human/animal/creature). `items.theme` is only meaningful for
+  character items and is `null` for backgrounds.
 
 - **Legendary items are crate-exclusive.** Their `price` column is `null` in
   the catalog, and the purchase endpoint checks the stored item's
@@ -171,11 +164,12 @@ for transparency:
   session's `pointsEarned` via a database-level `SUM`, so spending doesn't
   hurt rank.
 
-- **`sessionName` is free-text and always rendered via `textContent`, never
-  `innerHTML`.** It's validated server-side as a plain string (max 100
-  chars) but the real XSS protection is at render time on the frontend —
-  a malicious session name (e.g. `<img src=x onerror=...>`) displays as
-  harmless literal text instead of executing.
+- **User-controlled text is always rendered with `textContent`, never
+  `innerHTML`.** This covers `sessionName` (free text, max 100 chars) and
+  usernames on the public leaderboard. A malicious value such as
+  `<img src=x onerror=...>` displays as harmless literal text instead of
+  executing. Usernames are additionally restricted server-side to letters,
+  numbers and underscores.
 
 - **The timer's duration input accepts up to 6 typed digits**, interpreted
   as HH+MM+SS, normalized with real time-math carrying (e.g. typing 75
@@ -185,46 +179,39 @@ for transparency:
 
 - **Authentication uses a short-lived access token + long-lived refresh
   token pair, not a single JWT.** The access token (15 min, JWT) lives in
-  `localStorage`, per course requirement. The refresh token (7 days) is
-  deliberately *not* a JWT — it's a random opaque ID stored server-side in
-  `refresh_tokens`, delivered only via an httpOnly cookie scoped to
-  `/api/auth`, so client-side JS can never read it even if XSS occurred. It
-  **rotates** on every use (old row deleted, new one issued), so a replayed
-  old refresh token is rejected immediately — verified directly by
-  registering, refreshing once, then attempting to reuse the pre-rotation
-  cookie and confirming it's cleanly rejected with `401`.
+  `localStorage`. The refresh token (7 days) is deliberately *not* a JWT —
+  it's a random opaque ID stored server-side in `refresh_tokens`, delivered
+  only via an httpOnly cookie scoped to `/api/auth`, so client-side JS can
+  never read it even if XSS occurred. It **rotates** on every use (old row
+  deleted, new one issued), so a replayed old refresh token is rejected
+  immediately with `401`.
 
-- **`helmet` and rate limiting were added for defense-in-depth.** Login and
-  register are rate-limited (10 requests/15 min per IP, shared across both
-  endpoints) against brute-force attempts. Helmet's default
-  Content-Security-Policy initially blocked character/background images
-  from loading (they're hosted on Cloudinary, a different origin from
-  `img-src 'self'`) — fixed with a precise one-directive allowlist
+- **`helmet` and rate limiting are used for defense-in-depth.** Login and
+  register are rate-limited against brute-force attempts. Helmet's default
+  Content-Security-Policy blocks images from other origins, and character/
+  background art is hosted on Cloudinary — so the CSP carries a precise
+  one-directive allowlist
   (`imgSrc: ["'self'", 'data:', 'https://res.cloudinary.com']`) rather than
   disabling CSP wholesale, so every other protection stays intact.
 
-- **`cors` was removed entirely, not just configured narrowly.** Since
-  `index.js` serves both the frontend and the API from the same origin
-  (`express.static('src/frontend')` alongside the `/api` routes), there is
-  no cross-origin request to allow in the first place — CORS only matters
-  when a page on one origin calls an API on another. With no `cors()`
-  middleware, the browser's own default behavior already blocks any
-  cross-origin request from reading the response, which is at least as
-  restrictive as a narrowly-configured allowlist would have been.
+- **There is no `cors` middleware.** `index.js` serves both the frontend and
+  the API from the same origin (`express.static('src/frontend')` alongside
+  the `/api` routes), so there is no cross-origin request to allow in the
+  first place. Without `cors()`, the browser's default same-origin policy
+  already blocks other sites from reading API responses.
 
-- **Character/background art is added by directly pasting a hosted image URL
-  into `seed.js`, not through an in-app upload feature.** Images/GIFs are
-  uploaded manually via Cloudinary's own dashboard, and the resulting URL is
-  pasted as that item's `imageUrl` in the seed data, then reseeded with
-  `npm run db`. Deliberately simple — no upload endpoint, no file storage
-  concerns, no separate upload script.
+- **Character/background art is added by pasting a hosted image URL into
+  `seed.js`, not through an in-app upload feature.** Images/GIFs are
+  uploaded manually via Cloudinary's dashboard, the resulting URL is pasted
+  as that item's `imageUrl`, then reseeded with `npm run db`. Deliberately
+  simple — no upload endpoint or file-storage concerns.
 
 ## Scripts
 
 | Command | Description |
 |---|---|
+| `npm start` | Start the server (`node index.js`) |
 | `npm run dev` | Start dev server with nodemon |
 | `npm run db` | Reset database and run seed script |
 | `npm run studio` | Open Drizzle Studio to browse/edit the database visually |
 | `npm test` | Run test suite |
-| `npm run export` | Create `export.zip` for submission |
