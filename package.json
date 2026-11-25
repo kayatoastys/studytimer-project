@@ -1,7 +1,7 @@
 {
   "name": "study-timer",
   "version": "1.0.0",
-  "description": "Study timer for ST0503 BED using Express.js, libsql, and Drizzle ORM",
+  "description": "Gamified study timer built with Express.js, libSQL and Drizzle ORM",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -9,8 +9,7 @@
     "dev": "nodemon --config _extras/nodemon.json index.js",
     "db": "node src/db/seed.js",
     "studio": "drizzle-kit studio",
-    "test": "vitest run",
-    "export": "zip -r export.zip . -x 'node_modules/*' 'export.zip'"
+    "test": "vitest run"
   },
   "dependencies": {
     "@libsql/client": "^0.15.0",
@@ -34,6 +33,6 @@
     "vitest": "^2.1.8"
   },
   "keywords": [],
-  "author": "kaylachua",
+  "author": "kayatoastys",
   "license": "ISC"
 }
