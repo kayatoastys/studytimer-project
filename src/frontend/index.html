@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/study.css">
+</head>
+<body class="study-body">
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Study Timer</a>
+    <a href="login.html" class="header-points" id="headerPoints">Log in to earn points</a>
+  </header>
+
+  <nav class="bottom-nav">
+    <a href="shop.html">Shop</a>
+    <a href="inventory.html">Inventory</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="profile.html" id="profileLink">Profile</a>
+  </nav>
+
+  <main class="study-page">
+    <section class="timer-panel" aria-label="Study timer">
+      <div class="timer-tabs" role="tablist" id="timerTabs">
+        <button type="button" class="timer-tab is-active" data-mode="timer" role="tab">Timer</button>
+        <button type="button" class="timer-tab" data-mode="stopwatch" role="tab">Stopwatch</button>
+      </div>
+
+      <div
+        class="timer-display"
+        id="timerDisplay"
+        tabindex="0"
+        role="textbox"
+        aria-label="Set timer duration, type numbers to enter hours, minutes and seconds"
+      >00:00:00</div>
+
+      <p class="timer-hint" id="timerHint">Click the clock, then type to set a duration</p>
+
+      <input
+        type="text"
+        class="timer-session-name-input"
+        id="timerSessionName"
+        placeholder="Session name"
+        maxlength="100"
+      >
+
+      <div class="timer-buttons" id="timerButtons">
+        <button type="button" class="timer-btn timer-btn--primary" id="timerStartBtn">Start</button>
+      </div>
+
+      <p class="timer-feedback" id="timerFeedback"></p>
+    </section>
+
+    <section class="character-panel" aria-label="Your study companion">
+      <div class="character-figure" id="characterFigure">
+        <svg class="stick-figure" viewBox="0 0 100 160" role="img" aria-label="A stick figure studying">
+          <circle cx="50" cy="20" r="15" fill="none" stroke="currentColor" stroke-width="3"></circle>
+          <line x1="50" y1="35" x2="50" y2="90" stroke="currentColor" stroke-width="3"></line>
+          <line x1="50" y1="90" x2="30" y2="140" stroke="currentColor" stroke-width="3"></line>
+          <line x1="50" y1="90" x2="70" y2="140" stroke="currentColor" stroke-width="3"></line>
+          <line x1="50" y1="55" x2="30" y2="75" stroke="currentColor" stroke-width="3"></line>
+          <line x1="50" y1="55" x2="70" y2="75" stroke="currentColor" stroke-width="3" class="stick-arm-write"></line>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

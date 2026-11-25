@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop — Study Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/shop.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Study Timer</a>
+    <nav class="header-nav">
+      <a href="inventory.html">Inventory</a>
+      <a href="profile.html">Profile</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="login.html" class="header-points" id="headerPoints">Log in to earn points</a>
+    </nav>
+  </header>
+
+  <main class="shop-page">
+    <h1 class="shop-title">Shop</h1>
+    <p class="shop-message" id="shopMessage" role="alert"></p>
+
+    <section class="shop-section">
+      <h2 class="shop-section-title">Crates</h2>
+      <div class="crate-grid" id="crateGrid"></div>
+    </section>
+
+    <section class="shop-section">
+      <h2 class="shop-section-title">Characters</h2>
+      <div class="item-grid" id="characterGrid"></div>
+    </section>
+
+    <section class="shop-section">
+      <h2 class="shop-section-title">Backgrounds</h2>
+      <div class="item-grid" id="backgroundGrid"></div>
+    </section>
+  </main>
+
+  <script type="module" src="js/shop.js"></script>
+</body>
+</html>

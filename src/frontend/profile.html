@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — Study Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Study Timer</a>
+    <nav class="header-nav">
+      <a href="shop.html">Shop</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="login.html" class="header-points" id="headerPoints">Log in to earn points</a>
+    </nav>
+  </header>
+
+  <main class="profile-page">
+    <section class="profile-card">
+      <div class="profile-top">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="profileAvatar"></div>
+          <button type="button" class="avatar-edit-btn" id="avatarEditBtn">Edit</button>
+        </div>
+        <div class="profile-info-grid">
+          <div>
+            <p class="profile-stat-label">Username</p>
+            <p class="profile-stat-value" id="profileUsername">—</p>
+          </div>
+          <div>
+            <p class="profile-stat-label">Current points</p>
+            <p class="profile-stat-value" id="profileCurrentPoints">0</p>
+          </div>
+          <div>
+            <p class="profile-stat-label">Total time studied</p>
+            <p class="profile-stat-value" id="profileTotalTime">0m</p>
+          </div>
+          <div>
+            <p class="profile-stat-label">Total points accumulated</p>
+            <p class="profile-stat-value" id="profileTotalPoints">0</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="avatar-editor" id="avatarEditor" hidden>
+        <div class="avatar-editor-preview" id="avatarEditorPreview"></div>
+
+        <p class="avatar-editor-label">Eyes</p>
+        <div class="avatar-preset-row" id="eyePresetRow"></div>
+
+        <p class="avatar-editor-label">Mouth</p>
+        <div class="avatar-preset-row" id="mouthPresetRow"></div>
+
+        <div class="avatar-editor-actions">
+          <button type="button" class="avatar-editor-btn avatar-editor-btn--cancel" id="avatarCancelBtn">Cancel</button>
+          <button type="button" class="avatar-editor-btn avatar-editor-btn--save" id="avatarSaveBtn">Save</button>
+        </div>
+        <p class="avatar-editor-feedback" id="avatarFeedback"></p>
+      </div>
+
+      <button type="button" class="nav-logout" id="logoutBtn">Log out</button>
+    </section>
+
+    <section class="session-history-card">
+      <h2 class="session-history-title">Study sessions</h2>
+      <div class="session-list" id="sessionList">
+        <p class="session-empty" id="sessionEmpty">No study sessions yet.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/profile.js"></script>
+</body>
+</html>

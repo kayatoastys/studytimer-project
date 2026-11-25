@@ -1,0 +1,39 @@
+{
+  "name": "study-timer",
+  "version": "1.0.0",
+  "description": "Study timer for ST0503 BED using Express.js, libsql, and Drizzle ORM",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --config _extras/nodemon.json index.js",
+    "db": "node src/db/seed.js",
+    "studio": "drizzle-kit studio",
+    "test": "vitest run",
+    "export": "zip -r export.zip . -x 'node_modules/*' 'export.zip'"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.38.0",
+    "express": "^4.21.0",
+    "express-rate-limit": "^8.6.1",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.0",
+    "nodemon": "^3.1.0",
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.8"
+  },
+  "keywords": [],
+  "author": "kaylachua",
+  "license": "ISC"
+}

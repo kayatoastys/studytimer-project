@@ -1,0 +1,282 @@
+/* ===== Study Timer — "Soft pastel dorm glow" design system =====
+   Shared across every page: tokens, reset, typography, header, bottom nav. */
+
+:root {
+  --color-bg: #f7f7f9;
+  --color-bg-deep: #f1e9fb;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f5edfc;
+
+  --color-primary: #d79af9;
+  --color-primary-deep: #7a3fae;
+  --color-secondary: #f9aee0;
+  --color-secondary-deep: #c2569e;
+  --color-tertiary: #c9baf7;
+  --color-tertiary-deep: #6d4bb8;
+
+  --color-text: #26202e;
+  --color-text-muted: #7a7585;
+  --color-border: #e6e3ec;
+  --color-danger: #d1478f;
+  --color-success: #6d4bb8;
+
+  --font-display: "Fredoka", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-glow: 0 0 40px rgba(215, 154, 249, 0.18);
+  --shadow-card: 0 8px 28px rgba(38, 32, 46, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, var(--color-surface-alt) 0%, transparent 60%),
+    var(--color-bg);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-tertiary-deep);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-primary-deep);
+  outline-offset: 2px;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-points {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--color-secondary-deep);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color 0.12s ease;
+}
+
+.header-points:hover {
+  color: var(--color-danger);
+  text-decoration: underline;
+}
+
+/* Applied by nav.js once logged in — points become a plain, non-clickable
+   display in a different tone, since a real "Profile" link already exists
+   in the nav right next to it. */
+.header-points.is-idle {
+  color: var(--color-primary-deep);
+  cursor: default;
+  pointer-events: none;
+}
+
+.header-points.is-idle:hover {
+  color: var(--color-primary-deep);
+  text-decoration: none;
+}
+
+.site-logo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.site-logo::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary-deep);
+  box-shadow: 0 0 10px 2px rgba(115, 23, 153, 0.45);
+  display: inline-block;
+}
+
+/* ===== Bottom floating nav (used by index.html, inventory.html, shop.html) ===== */
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.4rem;
+  box-shadow: var(--shadow-card);
+  z-index: 100;
+}
+
+.bottom-nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.bottom-nav a:hover {
+  background: var(--color-surface-alt);
+  color: var(--color-primary-deep);
+  text-decoration: none;
+}
+
+.nav-logout {
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.nav-logout:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* ===== Top-right header nav (used by profile.html, shop.html — pages that
+   don't need the top-right space reserved, unlike index.html) ===== */
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.35rem;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.header-nav a {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.header-nav a:hover {
+  background: var(--color-surface-alt);
+  color: var(--color-primary-deep);
+  text-decoration: none;
+}
+
+.header-nav .header-points {
+  padding: 0.45rem 0.9rem;
+  white-space: nowrap;
+}
+
+/* ===== Shared item card grid (used by shop.html and inventory.html) ===== */
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.item-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 0.9rem;
+  text-align: center;
+}
+
+.item-image {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-bottom: 0.15rem;
+}
+
+.rarity-common {
+  background: #eceaf1;
+  color: #6b6577;
+}
+
+.rarity-uncommon {
+  background: #e1f5e6;
+  color: #3f8a5a;
+}
+
+.rarity-rare {
+  background: #e3edfa;
+  color: #3d6fb0;
+}
+
+.rarity-epic {
+  background: #f1e9fb;
+  color: #7a3fae;
+}
+
+.rarity-legendary {
+  background: #faf3d9;
+  color: #a3811f;
+}
+
+.no-media-badge {
+  display: block;
+  font-size: 0.68rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
+}

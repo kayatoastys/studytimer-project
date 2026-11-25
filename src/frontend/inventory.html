@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory — Study Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/inventory.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="site-logo">Study Timer</a>
+    <nav class="header-nav">
+      <a href="shop.html">Shop</a>
+      <a href="profile.html">Profile</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="login.html" class="header-points" id="headerPoints">Log in to earn points</a>
+    </nav>
+  </header>
+
+  <main class="inventory-page">
+    <h1 class="inventory-title">Inventory</h1>
+
+    <section class="inventory-section">
+      <h2 class="inventory-section-title">Characters</h2>
+      <div class="item-grid" id="characterGrid"></div>
+    </section>
+
+    <section class="inventory-section">
+      <h2 class="inventory-section-title">Backgrounds</h2>
+      <div class="item-grid" id="backgroundGrid"></div>
+    </section>
+  </main>
+
+  <script type="module" src="js/inventory.js"></script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+/* ===== Profile page (profile.html) =====
+   This page uses its own top-right header nav instead of the shared
+   bottom-nav — a deliberate one-off layout choice for this page only. */
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.35rem;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.header-nav a {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.header-nav a:hover {
+  background: var(--color-surface-alt);
+  color: var(--color-primary-deep);
+  text-decoration: none;
+}
+
+.header-nav .header-points {
+  padding: 0.45rem 0.9rem;
+  white-space: nowrap;
+}
+
+.profile-page {
+  max-width: 760px;
+  margin: 2rem auto 6rem;
+  padding: 0 1.5rem;
+}
+
+.profile-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.75rem 2rem;
+  text-align: center;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profile-avatar svg {
+  width: 70%;
+  height: 70%;
+}
+
+.profile-avatar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.avatar-edit-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary-deep);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+}
+
+.avatar-edit-btn:hover {
+  text-decoration: underline;
+}
+
+.avatar-editor {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.avatar-editor-preview {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatar-editor-preview svg {
+  width: 70%;
+  height: 70%;
+}
+
+.avatar-editor-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.avatar-preset-row {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.avatar-preset-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.avatar-preset-btn svg {
+  width: 65%;
+  height: 65%;
+  pointer-events: none;
+}
+
+.avatar-preset-btn:hover {
+  border-color: var(--color-primary);
+}
+
+.avatar-preset-btn.is-selected {
+  border-color: var(--color-primary-deep);
+  background: var(--color-surface-alt);
+}
+
+.avatar-editor-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.avatar-editor-btn {
+  padding: 0.55rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  border: none;
+}
+
+.avatar-editor-btn--save {
+  background: var(--color-primary);
+  color: var(--color-text);
+}
+
+.avatar-editor-btn--save:hover {
+  background: var(--color-primary-deep);
+  color: #ffffff;
+}
+
+.avatar-editor-btn--save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.avatar-editor-btn--cancel {
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.avatar-editor-btn--cancel:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.avatar-editor-feedback {
+  min-height: 1.2rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.75rem;
+}
+
+.profile-info-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.5rem;
+}
+
+.profile-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-primary-deep);
+}
+
+#profileCurrentPoints,
+#profileTotalPoints {
+  color: var(--color-secondary-deep);
+}
+
+.profile-stat-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.session-history-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem 2rem;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.session-history-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.session-list {
+  max-height: 230px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.session-empty {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.session-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+}
+
+.session-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.2rem;
+}
+
+.session-item-name {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.session-item-points {
+  font-family: var(--font-mono);
+  color: var(--color-secondary-deep);
+  font-size: 0.9rem;
+}
+
+.session-item-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
